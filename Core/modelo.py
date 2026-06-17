@@ -5,18 +5,23 @@ class Cuenta:
         self.cedula = cedula
         self.saldo = saldo
 
+
     def to_dict(self):
+        """Convierte el objeto en diccionario para guardarlo en JSON"""
         return {
+            "numero_cuenta": self.numero_cuenta,
             "nombre": self.nombre,
             "cedula": self.cedula,
             "saldo": self.saldo
         }
 
+
     @staticmethod
-    def from_dict(numero_cuenta, data):
+    def from_dict(data):
+        """Convierte JSON a objeto Cuenta"""
         return Cuenta(
-            numero_cuenta,
+            data["numero_cuenta"],
             data["nombre"],
             data["cedula"],
-            data["saldo"]
+            data.get("saldo", 0.0)
         )

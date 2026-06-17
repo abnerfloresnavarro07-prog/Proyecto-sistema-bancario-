@@ -1,58 +1,58 @@
-import gestor
+from core.gestor import *
 
 def menu():
     while True:
-        print("\n===== BANCO =====")
+        print("\n===== SISTEMA BANCARIO =====")
         print("1. Crear cuenta")
-        print("2. Iniciar sesión")
-        print("3. Ver saldo")
+        print("2. Listar cuentas")
+        print("3. Buscar cuenta")
         print("4. Depositar")
         print("5. Retirar")
-        print("6. Eliminar cuenta")
-        print("7. Listar cuentas")
-        print("8. Salir")
+        print("6. Salir")
 
-        opcion = input("Seleccione una opción: ")
+        op = input("Seleccione una opción: ")
 
-        if opcion == "1":
+        if op == "1":
             nombre = input("Nombre: ")
             cedula = input("Cédula: ")
-            numero = input("Número de cuenta: ")
-            print(gestor.crear_cuenta(nombre, cedula, numero))
+            numero_cuenta = input("Número de cuenta: ")
 
-        elif opcion == "2":
-            numero = input("Número de cuenta: ")
-            cedula = input("Cédula: ")
-            print(gestor.iniciar_sesion(numero, cedula))
+            resultado = crear_cuenta({
+                "nombre": nombre,
+                "cedula": cedula,
+                "numero_cuenta": numero_cuenta
+            })
 
-        elif opcion == "3":
-            numero = input("Número de cuenta: ")
-            print("Saldo:", gestor.mostrar_saldo(numero))
+            print(resultado)
 
-        elif opcion == "4":
-            numero = input("Número de cuenta: ")
-            monto = float(input("Monto: "))
-            print(gestor.depositar(numero, monto))
 
-        elif opcion == "5":
-            numero = input("Número de cuenta: ")
-            monto = float(input("Monto: "))
-            print(gestor.retirar(numero, monto))
+        elif op == "2":
+            cuentas = listar_cuentas()
+            for c in cuentas:
+                print(c)
 
-        elif opcion == "6":
-            numero = input("Número de cuenta: ")
-            print(gestor.eliminar_cuenta(numero))
 
-        elif opcion == "7":
-            print(gestor.listar_cuentas())
+        elif op == "3":
+            num = input("Número de cuenta: ")
+            resultado = buscar_cuenta(num)
+            print(resultado if resultado else "No encontrada")
 
-        elif opcion == "8":
+
+        elif op == "4":
+            num = input("Número de cuenta: ")
+            monto = float(input("Monto a depositar: "))
+            print(depositar(num, monto))
+
+
+        elif op == "5":
+            num = input("Número de cuenta: ")
+            monto = float(input("Monto a retirar: "))
+            print(retirar(num, monto))
+
+
+        elif op == "6":
             print("Saliendo...")
             break
 
         else:
             print("Opción inválida")
-
-
-if __name__ == "__main__":
-    menu()

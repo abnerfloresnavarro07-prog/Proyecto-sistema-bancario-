@@ -1,86 +1,82 @@
 import json
 import os
 
-RUTA = os.path.join("Data", "datos.json")
-os.makedirs("Data", exist_ok=True)
+FILE_PATH = "data/datos.json"
 
 
+# -------------------------
+# CARGAR Y GUARDAR
+# -------------------------
 def cargar_datos():
-    if not os.path.exists(RUTA):
-        return {}
-    try:
-        with open(RUTA, "r", encoding="utf-8") as archivo:
-            return json.load(archivo)
-    except:
-        return {}
+    if not os.path.exists(FILE_PATH):
+        return []
+    with open(FILE_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 
-def guardar_datos(cuentas):
-    with open(RUTA, "w", encoding="utf-8") as archivo:
-        json.dump(cuentas, archivo, indent=4, ensure_ascii=False)
+def guardar_datos(datos):
+    with open(FILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(datos, f, indent=4, ensure_ascii=False)
 
 
-cuentas = cargar_datos()
+# -------------------------
+# CRUDL
+# -------------------------
+def listar_cuentas():
+    return cargar_datos()
 
 
-def crear_cuenta(nombre, cedula, numero_cuenta):
-    if numero_cuenta in cuentas:
-        return "EXISTE"
-
-    cuentas[numero_cuenta] = {
-        "nombre": nombre,
-        "cedula": cedula,
-        "saldo": 0
-    }
-
-    guardar_datos(cuentas)
-    return "OK"
+def buscar_cuenta(numero_cuenta):
+    datos = cargar_datos()
+    for c in datos:
+        if c["numero_cuenta"] == numero_cuenta:
+            return c
+    return None
 
 
-def iniciar_sesion(numero_cuenta, cedula):
-    if numero_cuenta not in cuentas:
-        return False
-    return cuentas[numero_cuenta]["cedula"] == cedula
+def crear_cuenta(cuenta):
+    datos = cargar_datos()
 
+    # Validación: cuenta única
+    for c in datos:
+        if c["numero_cuenta"] == cuenta["numero_cuenta"]:
+            return "ERROR: La cuenta ya existe"
 
-def mostrar_saldo(numero_cuenta):
-    if numero_cuenta not in cuentas:
-        return None
-    return cuentas[numero_cuenta]["saldo"]
+    cuenta["saldo"] = 0.0
+    datos.append(cuenta)
+    guardar_datos(datos)
+    return "Cuenta creada exitosamente"
 
 
 def depositar(numero_cuenta, monto):
-    if numero_cuenta not in cuentas:
-        return "NO_CUENTA"
-    if monto <= 0:
-        return "INVALIDO"
+    datos = cargar_datos()
 
-    cuentas[numero_cuenta]["saldo"] += monto
-    guardar_datos(cuentas)
-    return cuentas[numero_cuenta]["saldo"]
+    for c in datos:
+        if c["numero_cuenta"] == numero_cuenta:
+            if monto <= 0:
+                return "ERROR: Monto inválido"
+
+            c["saldo"] += monto
+            guardar_datos(datos)
+            return "Depósito exitoso"
+
+    return "ERROR: Cuenta no encontrada"
 
 
 def retirar(numero_cuenta, monto):
-    if numero_cuenta not in cuentas:
-        return "NO_CUENTA"
-    if monto <= 0:
-        return "INVALIDO"
-    if monto > cuentas[numero_cuenta]["saldo"]:
-        return "INSUFICIENTE"
+    datos = cargar_datos()
 
-    cuentas[numero_cuenta]["saldo"] -= monto
-    guardar_datos(cuentas)
-    return cuentas[numero_cuenta]["saldo"]
+    for c in datos:
+        if c["numero_cuenta"] == numero_cuenta:
 
+            if monto <= 0:
+                return "ERROR: Monto inválido"
 
-def eliminar_cuenta(numero_cuenta):
-    if numero_cuenta not in cuentas:
-        return False
+            if monto > c["saldo"]:
+                return "ERROR: Saldo insuficiente"
 
-    del cuentas[numero_cuenta]
-    guardar_datos(cuentas)
-    return True
+            c["saldo"] -= monto
+            guardar_datos(datos)
+            return "Retiro exitoso"
 
-
-def listar_cuentas():
-    return cuentas
+    return "ERROR: Cuenta no encontrada"
