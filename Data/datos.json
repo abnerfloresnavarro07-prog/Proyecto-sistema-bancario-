@@ -19,5 +19,19 @@
         "numero_cuenta": "C:\\Users\\USUARIO\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe \"c:/Users/USUARIO/OneDrive/Documents/Desktop - copia/Proyecto-sistema-bancario-/Proyecto-sistema-bancario-/main.py\"",
         "saldo": 0,
         "id": 3
+    },
+    {
+        "nombre": "3",
+        "cedula": "2",
+        "numero_cuenta": "1",
+        "saldo": 0,
+        "id": 4
+    },
+    {
+        "nombre": "1",
+        "cedula": "22",
+        "numero_cuenta": "2",
+        "saldo": 0,
+        "id": 5
     }
 ]
