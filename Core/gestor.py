@@ -4,79 +4,132 @@ import os
 FILE_PATH = "data/datos.json"
 
 
-# -------------------------
-# CARGAR Y GUARDAR
-# -------------------------
 def cargar_datos():
+
     if not os.path.exists(FILE_PATH):
         return []
-    with open(FILE_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+
+    with open(FILE_PATH, "r", encoding="utf-8") as archivo:
+        return json.load(archivo)
 
 
 def guardar_datos(datos):
-    with open(FILE_PATH, "w", encoding="utf-8") as f:
-        json.dump(datos, f, indent=4, ensure_ascii=False)
+
+    with open(FILE_PATH, "w", encoding="utf-8") as archivo:
+        json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
 
-# -------------------------
+# ==========================
 # CRUDL
-# -------------------------
+# ==========================
+
 def listar_cuentas():
     return cargar_datos()
 
 
-def buscar_cuenta(numero_cuenta):
+def crear_cuenta(nueva_cuenta):
+
     datos = cargar_datos()
-    for c in datos:
-        if c["numero_cuenta"] == numero_cuenta:
-            return c
+
+    for cuenta in datos:
+        if cuenta["numero_cuenta"] == nueva_cuenta["numero_cuenta"]:
+            return False, "El número de cuenta ya existe."
+
+    if datos:
+        nueva_cuenta["id"] = datos[-1]["id"] + 1
+    else:
+        nueva_cuenta["id"] = 1
+
+    datos.append(nueva_cuenta)
+
+    guardar_datos(datos)
+
+    return True, "Cuenta creada correctamente."
+
+
+def buscar_cuenta(numero_cuenta):
+
+    datos = cargar_datos()
+
+    for cuenta in datos:
+
+        if cuenta["numero_cuenta"] == numero_cuenta:
+            return cuenta
+
     return None
 
 
-def crear_cuenta(cuenta):
+def actualizar_cuenta(numero_cuenta, datos_actualizados):
+
     datos = cargar_datos()
 
-    # Validación: cuenta única
-    for c in datos:
-        if c["numero_cuenta"] == cuenta["numero_cuenta"]:
-            return "ERROR: La cuenta ya existe"
+    for i, cuenta in enumerate(datos):
 
-    cuenta["saldo"] = 0.0
-    datos.append(cuenta)
+        if cuenta["numero_cuenta"] == numero_cuenta:
+
+            datos_actualizados["id"] = cuenta["id"]
+            datos_actualizados["numero_cuenta"] = numero_cuenta
+
+            datos[i] = datos_actualizados
+
+            guardar_datos(datos)
+
+            return True
+
+    return False
+
+
+def eliminar_cuenta(numero_cuenta):
+
+    datos = cargar_datos()
+
+    datos = [
+        cuenta
+        for cuenta in datos
+        if cuenta["numero_cuenta"] != numero_cuenta
+    ]
+
     guardar_datos(datos)
-    return "Cuenta creada exitosamente"
 
+    return True
+
+
+# ==========================
+# FUNCIONES BANCARIAS
+# ==========================
 
 def depositar(numero_cuenta, monto):
+
     datos = cargar_datos()
 
-    for c in datos:
-        if c["numero_cuenta"] == numero_cuenta:
-            if monto <= 0:
-                return "ERROR: Monto inválido"
+    for cuenta in datos:
 
-            c["saldo"] += monto
+        if cuenta["numero_cuenta"] == numero_cuenta:
+
+            cuenta["saldo"] += monto
+
             guardar_datos(datos)
-            return "Depósito exitoso"
 
-    return "ERROR: Cuenta no encontrada"
+            return True
+
+    return False
 
 
 def retirar(numero_cuenta, monto):
+
     datos = cargar_datos()
 
-    for c in datos:
-        if c["numero_cuenta"] == numero_cuenta:
+    for cuenta in datos:
 
-            if monto <= 0:
-                return "ERROR: Monto inválido"
+        if cuenta["numero_cuenta"] == numero_cuenta:
 
-            if monto > c["saldo"]:
-                return "ERROR: Saldo insuficiente"
+            if monto > cuenta["saldo"]:
+                return False
 
-            c["saldo"] -= monto
+            cuenta["saldo"] -= monto
+
             guardar_datos(datos)
-            return "Retiro exitoso"
 
-    return "ERROR: Cuenta no encontrada"
+            return True
+
+    return False

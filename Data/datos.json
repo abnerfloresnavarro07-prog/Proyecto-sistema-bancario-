@@ -1,12 +1,16 @@
-{
-    "1001": {
+[
+    {
+        "id": 1,
         "nombre": "Juan Perez",
-        "cedula": "001-120505-1023A",
-        "saldo": 1500.75
+        "cedula": "0010101010001A",
+        "numero_cuenta": "1001",
+        "saldo": 5000
     },
-    "1002": {
+    {
+        "id": 2,
         "nombre": "Maria Lopez",
-        "cedula": "001-150803-2045B",
-        "saldo": 320.50
+        "cedula": "0010202020002B",
+        "numero_cuenta": "1002",
+        "saldo": 3500
     }
-}
+]
