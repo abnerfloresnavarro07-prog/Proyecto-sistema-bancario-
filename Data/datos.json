@@ -12,5 +12,12 @@
         "cedula": "0010202020002B",
         "numero_cuenta": "1002",
         "saldo": 3500
+    },
+    {
+        "nombre": "C:\\Users\\USUARIO\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe \"c:/Users/USUARIO/OneDrive/Documents/Desktop - copia/Proyecto-sistema-bancario-/Proyecto-sistema-bancario-/main.py\"",
+        "cedula": "C:\\Users\\USUARIO\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe \"c:/Users/USUARIO/OneDrive/Documents/Desktop - copia/Proyecto-sistema-bancario-/Proyecto-sistema-bancario-/ui/console.py\"",
+        "numero_cuenta": "C:\\Users\\USUARIO\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe \"c:/Users/USUARIO/OneDrive/Documents/Desktop - copia/Proyecto-sistema-bancario-/Proyecto-sistema-bancario-/main.py\"",
+        "saldo": 0,
+        "id": 3
     }
 ]
