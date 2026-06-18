@@ -18,10 +18,6 @@ def guardar_datos(datos):
         json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
 
-# ==========================
-# CRUDL
-# ==========================
-
 def listar_cuentas():
     return cargar_datos()
 
@@ -92,10 +88,6 @@ def eliminar_cuenta(numero_cuenta):
 
     return True
 
-
-# ==========================
-# FUNCIONES BANCARIAS
-# ==========================
 
 def depositar(numero_cuenta, monto):
 
