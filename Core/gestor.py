@@ -3,7 +3,6 @@ import os
 
 FILE_PATH = "data/datos.json"
 
-
 def cargar_datos():
 
     if not os.path.exists(FILE_PATH):
